@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard1.5;net46</TargetFrameworks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>PM Extra</Authors>
     <Company>Shanghai Mowa Inforamtion Technology Co., Ltd.</Company>
     <Description />
@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="1.1.2" />
-    <PackageReference Include="StackExchange.Redis" Version="1.2.5" />
+    <PackageReference Include="StackExchange.Redis" Version="1.2.6" />
     <PackageReference Include="System.Net.NameResolution" Version="4.3.0" />
   </ItemGroup>
 
