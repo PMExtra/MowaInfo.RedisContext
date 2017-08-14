@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard1.5;net46</TargetFrameworks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
     <Authors>PM Extra</Authors>
     <Company>Shanghai Mowa Inforamtion Technology Co., Ltd.</Company>
     <Description />
