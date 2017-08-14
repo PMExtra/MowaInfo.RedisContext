@@ -1,11 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Http;
 using StackExchange.Redis;
 
 namespace MowaInfo.RedisContext
 {
-    public class RedisContext
+    public class RedisContext : IDisposable
     {
         private readonly ConnectionMultiplexer _connection;
 
@@ -26,6 +27,11 @@ namespace MowaInfo.RedisContext
         protected ISubscriber GetSubscriber()
         {
             return _connection.GetSubscriber();
+        }
+
+        public void Dispose()
+        {
+            _connection?.Dispose();
         }
     }
 }
