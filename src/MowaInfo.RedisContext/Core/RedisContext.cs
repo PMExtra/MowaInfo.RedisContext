@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -38,22 +39,30 @@ namespace MowaInfo.RedisContext.Core
             }
         }
 
+        internal static List<PropertyInfo> GetDatabaseProperties(Type t)
+        {
+            return t.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetProperty)
+                .Where(p => typeof(RedisDatabase).IsAssignableFrom(p.PropertyType))
+                .ToList();
+        }
+
         private void InitDatabaseProperties()
         {
-            var databaseProperties = GetType()
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetProperty)
-                .Where(p => p.PropertyType.IsAssignableFrom(typeof(RedisDatabase)))
-                .ToList();
-
-            foreach (var property in databaseProperties)
+            foreach (var property in GetDatabaseProperties(GetType()))
             {
-                var dbId = property.GetCustomAttribute<GetDatabaseAttribute>()?.Id
-                           ?? property.PropertyType.GetTypeInfo().GetCustomAttribute<GetDatabaseAttribute>()?.Id
-                           ?? -1;
-                var database = (RedisDatabase)Activator.CreateInstance(property.PropertyType);
-                database.Init(this, dbId);
+                var database = InitDatabase(property);
                 property.SetValue(this, database);
             }
+        }
+
+        internal RedisDatabase InitDatabase(PropertyInfo property)
+        {
+            var db = property.GetCustomAttribute<GetDatabaseAttribute>()?.Id
+                     ?? property.PropertyType.GetTypeInfo().GetCustomAttribute<GetDatabaseAttribute>()?.Id
+                     ?? -1;
+            var database = (RedisDatabase)Activator.CreateInstance(property.PropertyType);
+            database.Init(this, db);
+            return database;
         }
 
         public T AddObserver<T>() where T : RedisObserver, new()
