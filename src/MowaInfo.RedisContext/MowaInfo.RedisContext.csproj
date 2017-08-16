@@ -1,17 +1,19 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.5;net46</TargetFrameworks>
+    <TargetFrameworks>netstandard1.5;net46;netstandard2.0</TargetFrameworks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>0.1.2</Version>
+    <Version>0.2.0-alpha</Version>
     <Authors>PM Extra</Authors>
     <Company>Shanghai Mowa Inforamtion Technology Co., Ltd.</Company>
     <Description />
     <Copyright>Copyright © 2017 MowaInfo. All Rights Reserved.</Copyright>
     <PackageLicenseUrl>https://choosealicense.com/licenses/gpl-3.0</PackageLicenseUrl>
-    <RepositoryUrl>https://github.com/PMExtra/MowaInfo.RedisContext</RepositoryUrl>
+    <RepositoryUrl></RepositoryUrl>
     <PackageTags>MowaInfo redis</PackageTags>
+    <RootNamespace>MowaInfo.RedisContext</RootNamespace>
+    <PackageProjectUrl>https://github.com/PMExtra/MowaInfo.RedisContext</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
