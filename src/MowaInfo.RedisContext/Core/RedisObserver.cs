@@ -5,6 +5,7 @@ namespace MowaInfo.RedisContext.Core
 {
     public abstract class RedisObserver : IDisposable
     {
+        private RedisChannel _channel;
         private RedisContext _context;
 
         protected RedisObserver(RedisChannel channel)
@@ -14,10 +15,22 @@ namespace MowaInfo.RedisContext.Core
 
         private ISubscriber Subscriber => _context.Connection.GetSubscriber();
 
-        public RedisChannel Channel { get; }
+        public RedisChannel Channel
+        {
+            get => _channel;
+            protected set
+            {
+                if (_context != null)
+                {
+                    throw new InvalidOperationException("The channel cannot be changed at work.");
+                }
+                _channel = value;
+            }
+        }
 
         public void Dispose()
         {
+            Subscriber.Unsubscribe(_channel, OnNext, CommandFlags.FireAndForget);
         }
 
         protected abstract void OnNext(RedisChannel channel, RedisValue message);

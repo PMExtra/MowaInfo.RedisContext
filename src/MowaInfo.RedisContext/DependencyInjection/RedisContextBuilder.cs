@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 using MowaInfo.RedisContext.Core;
 
 namespace MowaInfo.RedisContext.DependencyInjection
@@ -16,25 +17,35 @@ namespace MowaInfo.RedisContext.DependencyInjection
 
         public IRedisContextBuilder AddObserver<T>() where T : RedisObserver, new()
         {
-            _services.AddTransient(provider => _context.AddObserver<T>());
+            _services.AddScoped(provider => _context.AddObserver<T>());
             return this;
         }
 
-        public IRedisContextBuilder AddObserver(RedisObserver observer)
+        public IRedisContextBuilder AddObserver<T>(Func<IServiceProvider, T> observerFactory) where T: RedisObserver
         {
-            _services.AddSingleton(observer.GetType(), provider => _context.AddObserver(observer));
+            _services.AddScoped(provider =>
+            {
+                var observer =  observerFactory(provider);
+                _context.AddObserver(observer);
+                return observer;
+            });
             return this;
         }
 
         public IRedisContextBuilder AddPublisher<T>() where T : RedisPublisher, new()
         {
-            _services.AddTransient(provider => _context.AddPublisher<T>());
+            _services.AddScoped(provider => _context.AddPublisher<T>());
             return this;
         }
 
-        public IRedisContextBuilder AddPublisher(RedisPublisher publisher)
+        public IRedisContextBuilder AddPublisher<T>(Func<IServiceProvider, T> publisherFactory) where T: RedisPublisher
         {
-            _services.AddSingleton(publisher.GetType(), provider => _context.AddPublisher(publisher));
+            _services.AddScoped(provider =>
+            {
+                var publisher = publisherFactory(provider);
+                _context.AddPublisher(publisher);
+                return publisher;
+            });
             return this;
         }
     }
