@@ -21,11 +21,11 @@ namespace MowaInfo.RedisContext.DependencyInjection
             return this;
         }
 
-        public IRedisContextBuilder AddObserver<T>(Func<IServiceProvider, T> observerFactory) where T: RedisObserver
+        public IRedisContextBuilder AddObserver<T>(Func<IServiceProvider, T> observerFactory) where T : RedisObserver
         {
             _services.AddScoped(provider =>
             {
-                var observer =  observerFactory(provider);
+                var observer = observerFactory(provider);
                 _context.AddObserver(observer);
                 return observer;
             });
@@ -38,7 +38,7 @@ namespace MowaInfo.RedisContext.DependencyInjection
             return this;
         }
 
-        public IRedisContextBuilder AddPublisher<T>(Func<IServiceProvider, T> publisherFactory) where T: RedisPublisher
+        public IRedisContextBuilder AddPublisher<T>(Func<IServiceProvider, T> publisherFactory) where T : RedisPublisher
         {
             _services.AddScoped(provider =>
             {
