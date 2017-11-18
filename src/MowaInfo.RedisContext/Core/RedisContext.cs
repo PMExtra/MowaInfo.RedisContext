@@ -83,7 +83,7 @@ namespace MowaInfo.RedisContext.Core
             return observer;
         }
 
-        public RedisPublisher AddPublisher<T>() where T : RedisPublisher, new()
+        public T AddPublisher<T>() where T : RedisPublisher, new()
         {
             return (T)AddPublisher(new T());
         }
