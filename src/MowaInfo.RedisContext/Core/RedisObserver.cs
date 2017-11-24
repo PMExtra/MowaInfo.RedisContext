@@ -30,10 +30,15 @@ namespace MowaInfo.RedisContext.Core
 
         public void Dispose()
         {
+            Dispose(true);
             if (_context != null)
             {
                 Subscriber.Unsubscribe(_channel, OnNext, CommandFlags.FireAndForget);
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
         }
 
         protected abstract void OnNext(RedisChannel channel, RedisValue message);
