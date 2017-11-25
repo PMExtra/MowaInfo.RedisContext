@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using MowaInfo.RedisContext.DependencyInjection;
 using StackExchange.Redis;
 
-namespace MowaInfo.RedisContext.DependencyInjection
+namespace MowaInfo.RedisContext
 {
     public static class ServicesCollectionExtensions
     {

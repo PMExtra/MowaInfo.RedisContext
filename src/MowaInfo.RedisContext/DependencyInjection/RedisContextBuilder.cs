@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using MowaInfo.RedisContext.Core;
 
 namespace MowaInfo.RedisContext.DependencyInjection
@@ -17,35 +16,13 @@ namespace MowaInfo.RedisContext.DependencyInjection
 
         public IRedisContextBuilder AddObserver<T>() where T : RedisObserver, new()
         {
-            _services.AddScoped(provider => _context.AddObserver<T>());
-            return this;
-        }
-
-        public IRedisContextBuilder AddObserver<T>(Func<IServiceProvider, T> observerFactory) where T : RedisObserver
-        {
-            _services.AddScoped(provider =>
-            {
-                var observer = observerFactory(provider);
-                _context.AddObserver(observer);
-                return observer;
-            });
+            _services.AddScoped(_ => _context.AddObserver<T>());
             return this;
         }
 
         public IRedisContextBuilder AddPublisher<T>() where T : RedisPublisher, new()
         {
-            _services.AddScoped(provider => _context.AddPublisher<T>());
-            return this;
-        }
-
-        public IRedisContextBuilder AddPublisher<T>(Func<IServiceProvider, T> publisherFactory) where T : RedisPublisher
-        {
-            _services.AddScoped(provider =>
-            {
-                var publisher = publisherFactory(provider);
-                _context.AddPublisher(publisher);
-                return publisher;
-            });
+            _services.AddScoped(_ => _context.AddPublisher<T>());
             return this;
         }
     }
