@@ -72,14 +72,13 @@ namespace MowaInfo.RedisContext.Core
 
         public RedisObserver AddObserver(RedisObserver observer)
         {
-            observer.Init(this);
+            observer.Context = this;
             return observer;
         }
 
-        public SimpleObserver AddObserver(RedisChannel channel)
+        public SimpleObserver AddObserver(RedisChannel channel, Action<RedisChannel, RedisValue> onNext)
         {
-            var observer = new SimpleObserver(channel);
-            observer.Init(this);
+            var observer = new SimpleObserver(channel, onNext) { Context = this };
             return observer;
         }
 
@@ -90,14 +89,13 @@ namespace MowaInfo.RedisContext.Core
 
         public RedisPublisher AddPublisher(RedisPublisher publisher)
         {
-            publisher.Init(this);
+            publisher.Context = this;
             return publisher;
         }
 
         public SimplePublisher AddPublisher(RedisChannel channel)
         {
-            var publisher = new SimplePublisher(channel);
-            publisher.Init(this);
+            var publisher = new SimplePublisher(channel) { Context = this };
             return publisher;
         }
     }

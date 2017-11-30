@@ -8,12 +8,21 @@ namespace MowaInfo.RedisContext.Core
         private RedisChannel _channel;
         private RedisContext _context;
 
-        protected RedisObserver(RedisChannel channel)
+        internal RedisContext Context
         {
-            Channel = channel;
+            get => _context;
+            set
+            {
+                if (_context != null)
+                {
+                    throw new InvalidOperationException("Cannot be added repeatedly.");
+                }
+                _context = value;
+                Subscriber.Subscribe(_channel, OnNext);
+            }
         }
 
-        private ISubscriber Subscriber => _context.Connection.GetSubscriber();
+        private ISubscriber Subscriber => Context.Connection.GetSubscriber();
 
         public RedisChannel Channel
         {
@@ -31,7 +40,7 @@ namespace MowaInfo.RedisContext.Core
         public void Dispose()
         {
             Dispose(true);
-            if (_context != null)
+            if (Context != null)
             {
                 Subscriber.Unsubscribe(_channel, OnNext, CommandFlags.FireAndForget);
             }
@@ -42,11 +51,5 @@ namespace MowaInfo.RedisContext.Core
         }
 
         protected abstract void OnNext(RedisChannel channel, RedisValue message);
-
-        internal void Init(RedisContext context)
-        {
-            _context = context;
-            Subscriber.Subscribe(Channel, OnNext);
-        }
     }
 }

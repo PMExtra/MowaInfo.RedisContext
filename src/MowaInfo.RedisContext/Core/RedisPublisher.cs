@@ -9,12 +9,20 @@ namespace MowaInfo.RedisContext.Core
         private RedisChannel _channel;
         private RedisContext _context;
 
-        protected RedisPublisher(RedisChannel channel)
+        internal RedisContext Context
         {
-            Channel = channel;
+            get => _context;
+            set
+            {
+                if (_context != null)
+                {
+                    throw new InvalidOperationException("Cannot be added repeatedly.");
+                }
+                _context = value;
+            }
         }
 
-        private ISubscriber Subscriber => _context.Connection.GetSubscriber();
+        internal ISubscriber Subscriber => Context.Connection.GetSubscriber();
 
         public RedisChannel Channel
         {
@@ -31,17 +39,12 @@ namespace MowaInfo.RedisContext.Core
 
         protected virtual long Publish(RedisValue message, CommandFlags flags = CommandFlags.None)
         {
-            return Subscriber.Publish(Channel, message, flags);
+            return Subscriber.Publish(_channel, message, flags);
         }
 
         protected virtual async Task<long> PublishAsync(RedisValue message, CommandFlags flags = CommandFlags.None)
         {
-            return await Subscriber.PublishAsync(Channel, message, flags);
-        }
-
-        internal void Init(RedisContext context)
-        {
-            _context = context;
+            return await Subscriber.PublishAsync(_channel, message, flags);
         }
     }
 }

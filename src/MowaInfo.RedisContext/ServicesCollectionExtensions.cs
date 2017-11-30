@@ -1,23 +1,22 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using MowaInfo.RedisContext.DependencyInjection;
 using StackExchange.Redis;
 
 namespace MowaInfo.RedisContext
 {
     public static class ServicesCollectionExtensions
     {
-        public static IRedisContextBuilder AddRedisContext<T>(this IServiceCollection services)
+        public static IServiceCollection AddRedisContext<T>(this IServiceCollection services)
             where T : Core.RedisContext, new()
         {
             var context = new T();
             services.AddSingleton(context);
 
-            return new RedisContextBuilder(services, context);
+            return services;
         }
 
-        public static IRedisContextBuilder AddRedisContext<T>(this IServiceCollection services, string host) where T : Core.RedisContext
+        public static IServiceCollection AddRedisContext<T>(this IServiceCollection services, string host) where T : Core.RedisContext
         {
             var hostString = new HostString(host);
             var context = (T)Activator.CreateInstance(typeof(T), hostString);
@@ -25,17 +24,17 @@ namespace MowaInfo.RedisContext
             services.AddSingleton(context);
             services.AddDatabase(context);
 
-            return new RedisContextBuilder(services, context);
+            return services;
         }
 
-        public static IRedisContextBuilder AddRedisContext<T>(this IServiceCollection services, ConfigurationOptions configuration) where T : Core.RedisContext
+        public static IServiceCollection AddRedisContext<T>(this IServiceCollection services, ConfigurationOptions configuration) where T : Core.RedisContext
         {
             var context = (T)Activator.CreateInstance(typeof(T), configuration);
 
             services.AddSingleton(context);
             services.AddDatabase(context);
 
-            return new RedisContextBuilder(services, context);
+            return services;
         }
 
         private static void AddDatabase<T>(this IServiceCollection services, T context) where T : Core.RedisContext

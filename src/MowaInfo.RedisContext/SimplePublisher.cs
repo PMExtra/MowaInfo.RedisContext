@@ -6,8 +6,9 @@ namespace MowaInfo.RedisContext
 {
     public class SimplePublisher : RedisPublisher
     {
-        public SimplePublisher(RedisChannel channel) : base(channel)
+        public SimplePublisher(RedisChannel channel)
         {
+            Channel = channel;
         }
 
         public new long Publish(RedisValue message, CommandFlags flags = CommandFlags.None)
