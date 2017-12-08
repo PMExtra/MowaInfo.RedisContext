@@ -31,6 +31,8 @@ namespace MowaInfo.RedisContext.Core
 
         internal ConnectionMultiplexer Connection => _lazyConnection.Value;
 
+        public ISubscriber Subscriber => Connection.GetSubscriber();
+
         public void Dispose()
         {
             if (_lazyConnection.IsValueCreated)
@@ -63,40 +65,6 @@ namespace MowaInfo.RedisContext.Core
             var database = (RedisDatabase)Activator.CreateInstance(property.PropertyType);
             database.Init(this, db);
             return database;
-        }
-
-        public T AddObserver<T>() where T : RedisObserver, new()
-        {
-            return (T)AddObserver(new T());
-        }
-
-        public RedisObserver AddObserver(RedisObserver observer)
-        {
-            observer.Context = this;
-            return observer;
-        }
-
-        public SimpleObserver AddObserver(RedisChannel channel, Action<RedisChannel, RedisValue> onNext)
-        {
-            var observer = new SimpleObserver(channel, onNext) { Context = this };
-            return observer;
-        }
-
-        public T AddPublisher<T>() where T : RedisPublisher, new()
-        {
-            return (T)AddPublisher(new T());
-        }
-
-        public RedisPublisher AddPublisher(RedisPublisher publisher)
-        {
-            publisher.Context = this;
-            return publisher;
-        }
-
-        public SimplePublisher AddPublisher(RedisChannel channel)
-        {
-            var publisher = new SimplePublisher(channel) { Context = this };
-            return publisher;
         }
     }
 }
