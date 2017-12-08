@@ -1,25 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Reflection;
-using Microsoft.AspNetCore.Http;
-using MowaInfo.RedisContext.Annotations;
 using StackExchange.Redis;
 
-namespace MowaInfo.RedisContext.Core
+namespace MowaInfo.RedisContext
 {
     public class RedisContext : IDisposable
     {
         private readonly Lazy<ConnectionMultiplexer> _lazyConnection;
 
-        public RedisContext(HostString host)
+        public RedisContext(string endPoint)
         {
-            var addresses = Dns.GetHostAddressesAsync(host.Host).Result.Select(addr => addr.MapToIPv4());
-            var configuration = host.Port == null
-                ? string.Join(",", addresses)
-                : string.Join(",", addresses.Select(addr => $"{addr}:{host.Port}"));
-            _lazyConnection = new Lazy<ConnectionMultiplexer>(() => ConnectionMultiplexer.Connect(configuration));
+            _lazyConnection = new Lazy<ConnectionMultiplexer>(() => ConnectionMultiplexer.Connect(endPoint));
             InitDatabaseProperties();
         }
 

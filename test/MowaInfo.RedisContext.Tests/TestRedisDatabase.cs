@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using MowaInfo.RedisContext.Core;
 using StackExchange.Redis;
 
 namespace MowaInfo.RedisContext.Tests

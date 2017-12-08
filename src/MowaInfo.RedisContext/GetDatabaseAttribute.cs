@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace MowaInfo.RedisContext.Annotations
+namespace MowaInfo.RedisContext
 {
     public class GetDatabaseAttribute : Attribute
     {

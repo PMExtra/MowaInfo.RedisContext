@@ -1,6 +1,6 @@
 ﻿using StackExchange.Redis;
 
-namespace MowaInfo.RedisContext.Core
+namespace MowaInfo.RedisContext
 {
     public abstract class RedisDatabase
     {
