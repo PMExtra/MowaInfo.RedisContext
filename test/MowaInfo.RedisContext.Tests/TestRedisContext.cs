@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using MowaInfo.RedisContext.Annotations;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 
 namespace MowaInfo.RedisContext.Tests
 {
-    public class TestRedisContext : Core.RedisContext
+    public class TestRedisContext : RedisContext
     {
-        public TestRedisContext(HostString host) : base(host)
+        public TestRedisContext(string endPoint) : base(endPoint)
         {
         }
 
